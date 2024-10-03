@@ -3,10 +3,11 @@
 ## 0. Group number: 
 
 ## 1. Group members:
-1. First
-2. Second
-3. Third
-4. Fourth
+1. Amine Sakrout
+2. Amol Gupta
+3. Quenton Hua
+4. Mohsin Khan
+5. Oreoluwa Ogunleye-Olawuyi
 
 ## 2. Project topic (e.g., parallel sorting algorithms)
 
@@ -16,6 +17,7 @@
 - Sample Sort:
 - Merge Sort:
 - Radix Sort:
+- Simple Sort:
 
 ### 2b. Pseudocode for each parallel algorithm
 - For MPI programs, include MPI calls you will use to coordinate between processes
