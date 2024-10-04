@@ -31,6 +31,7 @@
    Get rank of current process and the total num of processes
    MPI_Comm_rank(MPI_COMM_WORLD, &rank)
    MPI_Comm_size(MPI_COMM_WORLD, &size)
+
    Master process initializes the data array if rank == 0 (master process)
    if rank == 0 THEN
        Initialize the fullArray with N elements
@@ -48,9 +49,9 @@
 
    Parallel merging like a tree:
    step = 1
-   while step < size DO
-       if rank % (2 * step) == 0 THEN
-           if rank + step < size THEN
+   while step < size do
+       if rank % (2 * step) == 0 then
+           if rank + step < size then
                   Receive the sorted sub-array from the neighboring process (rank + step)
                   MPI_Recv(receive_buffer, subArraySize, MPI_INT, rank + step, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)
                   Merge the received sub-array with the local sub-array
@@ -63,13 +64,13 @@
               Send the local sorted sub-array to the neighboring process (rank - step)
               MPI_Send(subArray, subArraySize, MPI_INT, rank - step, 0, MPI_COMM_WORLD)
 
-              Exit the loop once the array is sent
+              Exit loop once the array is sent
               BREAK
        end if
        step = step * 2
    end while
 
-   Gather all sorted sub-arrays at master using MPI_Gather
+   Gather all sorted subarrays at master using MPI_Gather
    if rank == 0 then
        MPI_Gather(subArray, subArraySize, MPI_INT, fullArray, subArraySize, MPI_INT, 0, MPI_COMM_WORLD)
    end if 
@@ -79,7 +80,7 @@
         print sorted fullArray
     end if 
 
-    Finalize the MPI environment
+    Finalize MPI environment
     MPI_Finalize()
   ```
 - Radix Sort:
