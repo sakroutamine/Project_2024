@@ -2,6 +2,7 @@
 
 ## 0. Group number: 
 5
+
 ## 1. Group members:
 1. Amine Sakrout
 2. Amol Gupta
@@ -9,8 +10,9 @@
 4. Mohsin Khan
 5. Oreoluwa Ogunleye-Olawuyi
 
+
 ### 1a. Communication
-We will be using Discord to communicate with each other.
+We will be working together using Discord and text to ensure everyone is up to date and able to continue working on the assignment.
 
 ## 2. Project topic (e.g., parallel sorting algorithms)
 
@@ -24,6 +26,44 @@ We will be using Discord to communicate with each other.
 
 ### 2b. Pseudocode for each parallel algorithm
 - For MPI programs, include MPI calls you will use to coordinate between processes
+- Bitonic Sort-
+```
+code
+```
+- Sample Sort-
+```
+def parallel_sample_sort()
+    initialize_parallel_environment()
+    
+    num_procs = get_num_processors()
+    rank = get_processor_rank()
+    
+    MPI_Init(&argc, &argv);
+    dataset = [provided data]
+    gathered_samples = gather_samples_from_all_processors(dataset) #Split data
+    if (rank == ROOT) {
+        splitters = select_splitters(gathered_samples, num_procs) #Split collected data among all processors
+    }
+    exchanged_data = parallel_merge_sort(splitters) #Sort individual samples on parallel processors using merge sort
+    local_sorted_data = merge_received_partitions(exchanged_data) #Combine results and sort
+
+    global_sorted_data = gather_sorted_data(local_sorted_data) #Clean up returned data
+
+return global_sorted_data
+
+```
+- Merge Sort-
+```
+code
+```
+- Radix Sort-
+```
+code
+```
+- Column Sort-
+```
+code
+```
 
 - Bitonic Sort:
 - Sample Sort: 
