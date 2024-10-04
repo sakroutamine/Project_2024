@@ -64,67 +64,34 @@ code
 ```
 code
 ```
-
-- Bitonic Sort:
-- Sample Sort: 
-- Merge Sort Pseudocode:
+- Merge Sort-
 ```
-   Initialize MPI environment
-   MPI_Init()
-   Get rank of current process and the total num of processes
-   MPI_Comm_rank(MPI_COMM_WORLD, &rank)
-   MPI_Comm_size(MPI_COMM_WORLD, &size)
+function parallelMerge(subArray, subArraySize, rank, size):
+       Perform parallel merging in a tree
+       step = 1
+       while step < size do
+           if rank % (2 * step) == 0 then
+               // Check if the neighboring process (rank + step) exists
+               if rank + step < size then
+                      // Receive the sorted sub-array from the neighboring process 
+                      MPI_Recv(receive_buffer, subArraySize, MPI_INT, rank + step, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)
 
-   Master process initializes the data array if rank == 0 (master process)
-   if rank == 0 THEN
-       Initialize the fullArray with N elements
-   end if 
-   Broadcast the size of the data (N) to all processes using MPI_Bcast
-   MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD)
-   Divide the data into chunks for each process
-   subArraySize = N / size
-   Allocate memory for subArray of size subArraySize
-   Use MPI_Scatter to distribute parts of the full array from the master process to each process
-   MPI_Scatter(fullArray, subArraySize, MPI_INT, subArray, subArraySize, MPI_INT, 0, MPI_COMM_WORLD)
+                      // Merge the received sub-array with the local sub-array
+                      mergedArray = merge(subArray, receive_buffer)
 
-   Each process sorts its local sub-array using sequential Merge Sort
-   local_merge_sort(subArray, subArraySize)
-
-   Parallel merging like a tree:
-   step = 1
-   while step < size do
-       if rank % (2 * step) == 0 then
-           if rank + step < size then
-                  Receive the sorted sub-array from the neighboring process (rank + step)
-                  MPI_Recv(receive_buffer, subArraySize, MPI_INT, rank + step, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE)
-                  Merge the received sub-array with the local sub-array
-                  merged_array = merge(subArray, receive_buffer)
-                  Update the local sub-array with the merged result
-                  subArray = merged_array
-                  subArraySize = subArraySize * 2
-           end if 
-       else
-              Send the local sorted sub-array to the neighboring process (rank - step)
-              MPI_Send(subArray, subArraySize, MPI_INT, rank - step, 0, MPI_COMM_WORLD)
-
-              Exit loop once the array is sent
-              BREAK
-       end if
-       step = step * 2
-   end while
-
-   Gather all sorted subarrays at master using MPI_Gather
-   if rank == 0 then
-       MPI_Gather(subArray, subArraySize, MPI_INT, fullArray, subArraySize, MPI_INT, 0, MPI_COMM_WORLD)
-   end if 
-
-    Master process prints the fully sorted array
-    if rank == 0 THEN
-        print sorted fullArray
-    end if 
-
-    Finalize MPI environment
-    MPI_Finalize()
+                      // Update local sub-array with the merged result
+                      subArray = mergedArray
+                      subArraySize = subArraySize * 2
+               end if
+           else
+               // Send the local sorted sub-array to the neighboring process (rank - step)
+               MPI_Send(subArray, subArraySize, MPI_INT, rank - step, 0, MPI_COMM_WORLD)
+               // Exit the loop once the array is sent
+               break
+           end if
+           // Move to the next step in the merging process
+           step = step * 2
+       end while
   ```
 - Radix Sort:
 - Column Sort:
