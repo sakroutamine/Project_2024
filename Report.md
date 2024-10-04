@@ -9,6 +9,9 @@
 4. Mohsin Khan
 5. Oreoluwa Ogunleye-Olawuyi
 
+### 1a. Communication
+We will be using Discord to communicate with each other.
+
 ## 2. Project topic (e.g., parallel sorting algorithms)
 
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
