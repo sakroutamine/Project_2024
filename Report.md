@@ -20,7 +20,7 @@ We will be working together using Discord and text to ensure everyone is up to d
 
 ### 2a. Brief project description (what algorithms will you be comparing and on what architectures)
 
-- Bitonic Sort:
+- Bitonic Sort: Bitonic Sort (Amol Gupta): Bitonic Sort is a parallel sorting algorithm that works by creating a bitonic sequence (a sequence that first increases and then decreases). The algorithm recursively sorts the sequence by comparing and swapping elements to form the bitonic sequence, and then merges the sequence to produce a sorted list. To parallelize Bitonic Sort with OpenMPI, the dataset will be divided into smaller sub-sequences, each assigned to different processors. Each processor independently will then sort its sub-sequence into a bitonic sequence, and then the sequences will be merged in parallel to yield a fully sorted list.
 - Sample Sort: This algorithm splits up the dataset into smaller sample sizes and sorts these smaller groups using something like merge or quick sort. This sorting can be parallelized using OpenMPI to speed up this process. Once these groups are sorted they are merged together to yeild a fully sorted list.
 - Merge Sort (Quenton Hua): Merge Sort is a sorting algorithm that recursively divides a list into two halves, sorts each half, and merges the sorted halves to produce a sorted list. To parallelize Merge Sort with OpenMPI, the dataset will be divided into smaller chunks, each assigned to different processors. Each processor sorts its chunk independently which is then merged in parallel.
 - Radix Sort (Mohsin Khan): This algorithm processes the dataset by sorting elements based on individual digits, starting from the least significant digit. The sorting of each digit can be parallelized using OpenMPI to speed up the process. After each digit is sorted, the data is redistributed across processes to ensure the correct order for the next digit. Once all digits have been processed, the result is a fully sorted list.
@@ -33,7 +33,45 @@ We will be working together using Discord and text to ensure everyone is up to d
 - Bitonic Sort-
 
 ```
-code
+function bitonicSort(arr, low, cnt, dir):
+    if cnt > 1:
+        k = cnt / 2
+        bitonicSort(arr, low, k, 1)  // Sort in ascending order
+        bitonicSort(arr, low + k, k, 0)  // Sort in descending order
+        bitonicMerge(arr, low, cnt, dir)
+
+function bitonicMerge(arr, low, cnt, dir):
+    if cnt > 1:
+        k = cnt / 2
+        for i = low to low + k - 1:
+            if (dir == (arr[i] > arr[i + k])):
+                swap(arr[i], arr[i + k])
+        bitonicMerge(arr, low, k, dir)
+        bitonicMerge(arr, low + k, k, dir)
+
+function parallelBitonicSort(arr):
+    // Initialize MPI
+    MPI_Init()
+    rank = MPI_Comm_rank()
+    size = MPI_Comm_size()
+
+    // Divide the array into sub-sequences
+    local_arr = divideArray(arr, size, rank)
+
+    // Perform bitonic sort on local sub-sequence
+    bitonicSort(local_arr, 0, length(local_arr), 1)
+
+    // Gather sorted sub-sequences
+    sorted_arr = MPI_Gather(local_arr, root=0)
+
+    if rank == 0:
+        // Merge sorted sub-sequences
+        bitonicMerge(sorted_arr, 0, length(sorted_arr), 1)
+
+    // Finalize MPI
+    MPI_Finalize()
+
+    return sorted_arr if rank == 0 else None
 ```
 
 - Sample Sort-
@@ -186,8 +224,8 @@ function parallelMerge(subArray, subArraySize, rank, size):
 ### 2c. Evaluation plan - what and how will you measure and compare
 
 - Input sizes, Input types: We will use various input sizes to evaluate the performance of each parallel sorting algorithm. The input sizes will follow powers of two: `2^16, 2^18, 2^20, 2^22, 2^24, 2^26, 2^28`.
-- Strong scaling (same problem size, increase number of processors/nodes): We will measure **strong scaling** by fixing the input size and increasing the number of processors. We will evaluate how the runtime decreases as we increase the number of MPI processes from `2, 4, 8, 16, 32, 64, 128, 256, 512, to 1024` for the same input sizes. This will help us determine how well the algorithms use additional processors.
-- Weak scaling (increase problem size, increase number of processors): We will increase the problem size and the number of processors proportionally, aiming to keep the workload per processor constant. By comparing the runtimes as we increase both input size and number of processors, we can evaluate the algorithms' ability to handle larger datasets without increasing the per-processor workload.
+- Strong scaling (same problem size, increase number of processors/nodes): We will measure **strong scaling** by fixing the input size and increasing the number of processors. We will evaluate how the runtime changes as we increase the number of MPI processes from `2, 4, 8, 16, 32, 64, 128, 256, 512, to 1024` for the same input sizes. This will help us determine how well the algorithms use additional processors. Furthermore, we will test this logic on four different kinds of input: sorted, random, reverse sorted and 1% permutation.
+- Weak scaling (increase problem size, increase number of processors): We will increase the problem size and the number of processors proportionally, aiming to keep the workload per processor constant. By comparing the runtimes as we increase both input size and number of processors, we can evaluate the algorithms' ability to handle larger datasets without increasing the per-processor workload. Furthermore, we will test this logic on four different kinds of input: sorted, random, reverse sorted and 1% permutation.
 
 ### 3a. Caliper instrumentation
 
