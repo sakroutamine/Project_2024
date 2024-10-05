@@ -21,7 +21,7 @@ We will be working together using Discord and text to ensure everyone is up to d
 - Bitonic Sort:
 - Sample Sort: This algorithm splits up the dataset into smaller sample sizes and sorts these smaller groups using something like merge or quick sort. This sorting can be parallelized using OpenMPI to speed up this process. Once these groups are sorted they are merged together to yeild a fully sorted list.
 - Merge Sort (Quenton Hua): Merge Sort is a sorting algorithm that recursively divides a list into two halves, sorts each half, and merges the sorted halves to produce a sorted list. To parallelize Merge Sort with OpenMPI, the dataset will be divided into smaller chunks, each assigned to different processors. Each processor sorts its chunk independently which is then merged in parallel. 
-- Radix Sort:
+- Radix Sort (Mohsin Khan): This algorithm processes the dataset by sorting elements based on individual digits, starting from the least significant digit. The sorting of each digit can be parallelized using OpenMPI to speed up the process. After each digit is sorted, the data is redistributed across processes to ensure the correct order for the next digit. Once all digits have been processed, the result is a fully sorted list.
 - Column Sort:
 
 ### 2b. Pseudocode for each parallel algorithm
@@ -58,7 +58,61 @@ code
 ```
 - Radix Sort-
 ```
-code
+Initialize MPI environment
+MPI_Init()
+
+Get rank of current process and the total number of processes
+MPI_Comm_rank(MPI_COMM_WORLD, &rank)
+MPI_Comm_size(MPI_COMM_WORLD, &size)
+
+Master process initializes the data array if rank == 0 (master process)
+if rank == 0 THEN
+    Initialize the fullArray with N elements
+end if 
+
+Broadcast the size of the data (N) to all processes using MPI_Bcast
+MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD)
+
+Divide the data into chunks for each process
+subArraySize = N / size
+Allocate memory for subArray of size subArraySize
+
+Use MPI_Scatter to distribute parts of the full array from the master process to each process
+MPI_Scatter(fullArray, subArraySize, MPI_INT, subArray, subArraySize, MPI_INT, 0, MPI_COMM_WORLD)
+
+Find the maximum number in the local subArray to determine the number of digits
+local_max = find_max(subArray)
+Use MPI_Allreduce to find the global maximum value across all processes
+MPI_Allreduce(&local_max, &global_max, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD)
+
+For each digit (starting from the least significant digit) until the most significant digit:
+exp = 1
+while global_max / exp > 0 do
+
+    Perform counting sort on the current digit (exp) for the local subArray
+    local_counting_sort(subArray, subArraySize, exp)
+
+    Redistribute the data among processes based on the current digit using MPI_Alltoall
+    MPI_Alltoall(local_data, subArraySize, MPI_INT, received_data, subArraySize, MPI_INT, MPI_COMM_WORLD)
+    
+    Update subArray with redistributed received_data for the next round
+    subArray = received_data
+    
+    exp = exp * 10
+end while
+
+Optionally, gather all sorted subarrays at the master process using MPI_Gather
+if rank == 0 THEN
+    MPI_Gather(subArray, subArraySize, MPI_INT, fullArray, subArraySize, MPI_INT, 0, MPI_COMM_WORLD)
+end if
+
+Master process prints the fully sorted array
+if rank == 0 THEN
+    print sorted fullArray
+end if
+
+Finalize MPI environment
+MPI_Finalize()
 ```
 - Column Sort-
 ```
@@ -93,7 +147,6 @@ function parallelMerge(subArray, subArraySize, rank, size):
            step = step * 2
        end while
   ```
-- Radix Sort:
 - Column Sort:
 
 
