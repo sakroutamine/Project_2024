@@ -267,6 +267,42 @@ We are using 2^16 or 65536 values that make up the total array length along with
    ├─ 0.000 MPI_Finalized
    └─ 0.404 MPI_Comm_dup
 ```
+- Radix sort Calltree (2^16 Random):
+```
+0.451 main
+├─ 0.001 MPI_Barrier
+├─ 0.004 MPI_Bcast
+├─ 0.001 MPI_Comm_dup
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Finalized
+├─ 0.000 MPI_Init
+├─ 0.000 MPI_Initialized
+├─ 0.003 Sorting loop
+│  ├─ 0.003 comm
+│  │  └─ 0.003 comm_large
+│  │     ├─ 0.001 MPI_Alltoall
+│  │     ├─ 0.001 MPI_Alltoallv
+│  │     └─ 0.000 MPI_Barrier
+│  └─ 0.001 comp
+│     └─ 0.000 MPI_Barrier
+├─ 0.009 comm
+│  ├─ 0.000 MPI_Allreduce
+│  ├─ 0.000 MPI_Barrier
+│  ├─ 0.001 comm_large
+│  │  ├─ 0.000 MPI_Barrier
+│  │  └─ 0.001 MPI_Gather
+│  └─ 0.008 comm_small
+│     ├─ 0.008 MPI_Barrier
+│     └─ 0.000 MPI_Scatter
+├─ 0.008 comp
+│  └─ 0.008 comp_small
+│     └─ 0.008 MPI_Barrier
+├─ 0.001 correctness_check
+│  ├─ 0.000 MPI_Barrier
+│  ├─ 0.001 MPI_Bcast
+│  └─ 0.000 MPI_Gather
+└─ 0.000 data_init_runtime
+```
 
 Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
 (same as lab2 build.sh) to collect caliper files for each experiment you run.
