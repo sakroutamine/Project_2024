@@ -98,11 +98,6 @@ return global_sorted_data
 
 ```
 
-- Merge Sort-
-
-```
-code
-```
 
 - Radix Sort-
 
@@ -228,6 +223,29 @@ function parallelMerge(subArray, subArraySize, rank, size):
 - Weak scaling (increase problem size, increase number of processors): We will increase the problem size and the number of processors proportionally, aiming to keep the workload per processor constant. By comparing the runtimes as we increase both input size and number of processors, we can evaluate the algorithms' ability to handle larger datasets without increasing the per-processor workload. Furthermore, we will test this logic on four different kinds of input: sorted, random, reverse sorted and 1% permutation.
 
 ### 3a. Caliper instrumentation
+
+
+- Merge Sort Calltree (2^16 Random): 
+```
+1.801 main
+├─ 0.000 MPI_Init
+└─ 0.062 main
+   ├─ 0.002 data_init_runtime
+   ├─ 0.041 comm
+   │  ├─ 0.038 comm_small
+   │  │  └─ 0.038 MPI_Barrier
+   │  └─ 0.002 comm_large
+   │     ├─ 0.002 MPI_Scatter
+   │     └─ 0.000 MPI_Gather
+   ├─ 0.001 comp
+   │  ├─ 0.000 comp_small
+   │  └─ 0.001 comp_large
+   ├─ 0.000 MPI_Finalize
+   ├─ 0.000 correctness_check
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.000 MPI_Finalized
+   └─ 0.020 MPI_Comm_dup
+```
 
 Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
 (same as lab2 build.sh) to collect caliper files for each experiment you run.
