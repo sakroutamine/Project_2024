@@ -224,6 +224,7 @@ function parallelMerge(subArray, subArraySize, rank, size):
 
 ### 3a. Caliper instrumentation
 
+We are using 2^16 or 65536 values that make up the total array length along with using 32 processors. 
 
 - Merge Sort Calltree (2^16 Random): 
 ```
@@ -245,6 +246,26 @@ function parallelMerge(subArray, subArraySize, rank, size):
    ├─ 0.000 MPI_Initialized
    ├─ 0.000 MPI_Finalized
    └─ 0.020 MPI_Comm_dup
+```
+
+- Bitonic sort Calltree (2^16 Random):
+```
+  2.137 main
+├─ 0.000 MPI_Init
+└─ 0.511 main
+   ├─ 0.009 data_init_runtime
+   ├─ 0.095 comm
+   │  ├─ 0.093 MPI_Barrier
+   │  ├─ 0.000 MPI_Scatter
+   │  └─ 0.002 comm_large
+   │     └─ 0.002 MPI_Gather
+   ├─ 0.012 comp
+   │  └─ 0.012 comp_large
+   ├─ 0.000 MPI_Finalize
+   ├─ 0.000 correctness_check
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.000 MPI_Finalized
+   └─ 0.404 MPI_Comm_dup
 ```
 
 Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
