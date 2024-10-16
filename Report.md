@@ -250,7 +250,7 @@ We are using 2^16 or 65536 values that make up the total array length along with
 
 - Bitonic sort Calltree (2^16 Random):
 ```
-  2.137 main
+2.137 main
 ├─ 0.000 MPI_Init
 └─ 0.511 main
    ├─ 0.009 data_init_runtime
