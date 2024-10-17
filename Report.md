@@ -303,7 +303,26 @@ We are using 2^16 or 65536 values that make up the total array length along with
 │  └─ 0.000 MPI_Gather
 └─ 0.000 data_init_runtime
 ```
-
+Sample Sort
+```1.629 main
+├─ 0.000 MPI_Init
+├─ 0.000 data_init_X
+├─ 0.069 comm
+│  ├─ 0.053 comm_small
+│  │  └─ 0.053 MPI_Bcast
+│  └─ 0.016 comm_large
+│     ├─ 0.016 MPI_Scatter
+│     └─ 0.000 MPI_Gather
+├─ 0.001 comp
+│  └─ 0.001 comp_large
+├─ 0.000 correctness_check
+│  ├─ 0.000 MPI_Gather
+│  └─ 0.000 MPI_Bcast
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 0.001 MPI_Comm_dup
+```
 Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
 (same as lab2 build.sh) to collect caliper files for each experiment you run.
 
