@@ -73,6 +73,45 @@ function parallelBitonicSort(arr):
 
     return sorted_arr if rank == 0 else None
 
+function bitonicSort(arr, low, cnt, dir):
+    if cnt > 1:
+        k = cnt / 2
+        bitonicSort(arr, low, k, 1)  // Sort in ascending order
+        bitonicSort(arr, low + k, k, 0)  // Sort in descending order
+        bitonicMerge(arr, low, cnt, dir)
+
+function bitonicMerge(arr, low, cnt, dir):
+    if cnt > 1:
+        k = cnt / 2
+        for i = low to low + k - 1:
+            if (dir == (arr[i] > arr[i + k])):
+                swap(arr[i], arr[i + k])
+        bitonicMerge(arr, low, k, dir)
+        bitonicMerge(arr, low + k, k, dir)
+
+function parallelBitonicSort(arr):
+    // Initialize MPI
+    MPI_Init()
+    rank = MPI_Comm_rank()
+    size = MPI_Comm_size()
+
+    // Divide the array into sub-sequences
+    local_arr = divideArray(arr, size, rank)
+
+    // Perform bitonic sort on local sub-sequence
+    bitonicSort(local_arr, 0, length(local_arr), 1)
+
+    // Gather sorted sub-sequences
+    sorted_arr = MPI_Gather(local_arr, root=0)
+
+    if rank == 0:
+        // Merge sorted sub-sequences
+        bitonicMerge(sorted_arr, 0, length(sorted_arr), 1)
+
+    // Finalize MPI
+    MPI_Finalize()
+
+    return sorted_arr if rank == 0 else None
 ```
 
 - Sample Sort-
@@ -99,11 +138,6 @@ return global_sorted_data
 
 ```
 
-- Merge Sort-
-
-```
-code
-```
 
 - Radix Sort-
 
@@ -230,6 +264,105 @@ function parallelMerge(subArray, subArraySize, rank, size):
 
 ### 3a. Caliper instrumentation
 
+We are using 2^16 or 65536 values that make up the total array length along with using 32 processors. 
+
+- Merge Sort Calltree (2^16 Random): 
+```
+1.801 main
+├─ 0.000 MPI_Init
+└─ 0.062 main
+   ├─ 0.002 data_init_runtime
+   ├─ 0.041 comm
+   │  ├─ 0.038 comm_small
+   │  │  └─ 0.038 MPI_Barrier
+   │  └─ 0.002 comm_large
+   │     ├─ 0.002 MPI_Scatter
+   │     └─ 0.000 MPI_Gather
+   ├─ 0.001 comp
+   │  ├─ 0.000 comp_small
+   │  └─ 0.001 comp_large
+   ├─ 0.000 MPI_Finalize
+   ├─ 0.000 correctness_check
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.000 MPI_Finalized
+   └─ 0.020 MPI_Comm_dup
+```
+
+- Bitonic sort Calltree (2^16 Random):
+```
+2.137 main
+├─ 0.000 MPI_Init
+└─ 0.511 main
+   ├─ 0.009 data_init_runtime
+   ├─ 0.095 comm
+   │  ├─ 0.093 MPI_Barrier
+   │  ├─ 0.000 MPI_Scatter
+   │  └─ 0.002 comm_large
+   │     └─ 0.002 MPI_Gather
+   ├─ 0.012 comp
+   │  └─ 0.012 comp_large
+   ├─ 0.000 MPI_Finalize
+   ├─ 0.000 correctness_check
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.000 MPI_Finalized
+   └─ 0.404 MPI_Comm_dup
+```
+- Radix sort Calltree (2^16 Random):
+```
+0.451 main
+├─ 0.001 MPI_Barrier
+├─ 0.004 MPI_Bcast
+├─ 0.001 MPI_Comm_dup
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Finalized
+├─ 0.000 MPI_Init
+├─ 0.000 MPI_Initialized
+├─ 0.003 Sorting loop
+│  ├─ 0.003 comm
+│  │  └─ 0.003 comm_large
+│  │     ├─ 0.001 MPI_Alltoall
+│  │     ├─ 0.001 MPI_Alltoallv
+│  │     └─ 0.000 MPI_Barrier
+│  └─ 0.001 comp
+│     └─ 0.000 MPI_Barrier
+├─ 0.009 comm
+│  ├─ 0.000 MPI_Allreduce
+│  ├─ 0.000 MPI_Barrier
+│  ├─ 0.001 comm_large
+│  │  ├─ 0.000 MPI_Barrier
+│  │  └─ 0.001 MPI_Gather
+│  └─ 0.008 comm_small
+│     ├─ 0.008 MPI_Barrier
+│     └─ 0.000 MPI_Scatter
+├─ 0.008 comp
+│  └─ 0.008 comp_small
+│     └─ 0.008 MPI_Barrier
+├─ 0.001 correctness_check
+│  ├─ 0.000 MPI_Barrier
+│  ├─ 0.001 MPI_Bcast
+│  └─ 0.000 MPI_Gather
+└─ 0.000 data_init_runtime
+```
+Sample Sort
+```1.629 main
+├─ 0.000 MPI_Init
+├─ 0.000 data_init_X
+├─ 0.069 comm
+│  ├─ 0.053 comm_small
+│  │  └─ 0.053 MPI_Bcast
+│  └─ 0.016 comm_large
+│     ├─ 0.016 MPI_Scatter
+│     └─ 0.000 MPI_Gather
+├─ 0.001 comp
+│  └─ 0.001 comp_large
+├─ 0.000 correctness_check
+│  ├─ 0.000 MPI_Gather
+│  └─ 0.000 MPI_Bcast
+├─ 0.000 MPI_Finalize
+├─ 0.000 MPI_Initialized
+├─ 0.000 MPI_Finalized
+└─ 0.001 MPI_Comm_dup
+```
 Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
 (same as lab2 build.sh) to collect caliper files for each experiment you run.
 
