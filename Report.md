@@ -336,6 +336,8 @@ We are using 2^16 or 65536 values that make up the total array length along with
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/22b86a94-a958-4d45-ae07-ff5517d6c49f">
 
+These plot show the speedup x # of processors for main, comm, and comp_large. From these plots we can see that the smaller array sizes benefit the least with smaller speedups. The speedups within main actually tend to decrease with more processors, this is due to the communication overhead as seen in the comm graph. The speedup for comm exponentially decreases with increased processors, plateauing with higher processors. This would make sense as more processors would be used hence more communication to allocate parts of the array would be required. For the comp_large the speedup increases with more processors, this makes sense as the computation load decreases per processors as its distributed among more processors. The smaller array actually benefits the most for comp_large with increased processors, this could be due to the fact that it requires less merging and swapping for a smaller array.
+
 
 #### 4.1b
 
