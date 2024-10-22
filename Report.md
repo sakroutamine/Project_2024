@@ -354,6 +354,10 @@ We are using 2^16 or 65536 values that make up the total array length along with
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/32c14247-8bc0-4f03-936e-43acca71323a">
 
+The plots show the average, minimum, and maximum time per rank using a merge sort algorithm. The maximum time initially spikes higher than both the average and minimum times which could indicate a communication bottlenecks among ranks. As the array size increases, the gap between the minimum and maximum times narrows, suggesting improved load balancing with larger inputs. However, the maximum time remains consistently higher, which points to certain ranks taking longer most likely due to communication overhead. 
+
+
+
 
 Include detailed analysis of computation performance, communication performance.
 Include figures and explanation of your analysis.
