@@ -303,7 +303,7 @@ We are using 2^16 or 65536 values that make up the total array length along with
 │  └─ 0.000 MPI_Gather
 └─ 0.000 data_init_runtime
 ```
-Sample Sort:
+- Sample Sort:
 ```1.629 main
 ├─ 0.000 MPI_Init
 ├─ 0.000 data_init_X
@@ -326,6 +326,34 @@ Sample Sort:
 
 
 ## 4. Performance evaluation
+
+### 1. Merge Sort:
+#### 4.1a
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/2c6d92a6-8928-456c-82d5-0f6fec4df471">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/27049478-1eac-4041-b7fd-154b59976f7a">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/22b86a94-a958-4d45-ae07-ff5517d6c49f">
+
+
+#### 4.1b
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7a892919-121a-4f04-b10a-c6daabbafb83">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/ce2aabdf-7ff7-4a05-835b-66b8fb415d85">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/30f52c7f-25d7-4550-a61e-292242e4c047">
+
+
+#### 4.1c
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/edd91c53-604f-4522-a705-c630290ae8e2">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c17860bd-39ee-412d-a1c9-df05c2b59c6d">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/32c14247-8bc0-4f03-936e-43acca71323a">
+
 
 Include detailed analysis of computation performance, communication performance.
 Include figures and explanation of your analysis.
