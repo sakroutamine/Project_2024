@@ -383,6 +383,16 @@ The plots show the average, minimum, and maximum time per rank using a merge sor
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d9efc4ea-266d-411a-8b32-79cccf2acbf4">
 
+### 1. Sample Sort
+
+<img width="300" alt="image" src="image.png">
+<img width="300" alt="image" src="image2.png">
+<img width="300" alt="image" src="image3.png">
+<img width="300" alt="image" src="image4.png">
+<img width="300" alt="image" src="image5.png">
+
+The Sample Sort algorithm has been alternating between briefly working and crashing when run. As shown in the image above, it appears to be a memory issue in the code that hasn't been identified yet. Whenever these issues are not happening, the graphs produced by the cali file will work for main and display distorted data that somewhat show how increased sample size results in a slowdown as expected. This problem should be resolved by presentation time.
+
 ### 1. Radix Sort:
 
 #### 4.1a
