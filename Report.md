@@ -362,10 +362,9 @@ The plots show the average, minimum, and maximum time per rank using a merge sor
 
 <img width="300" alt="image" src="image.png">
 
-
 <img width="300" alt="image" src="image-2.png">
 
-blah
+In contrast to what we might expect, the graphs for main, comm, and comp show little to no significant difference between the various input types (perturbed, random, reverse, sorted) as the array size increases. This minimal variance suggests that the Radix Sort algorithm is robust across input types, treating each input type similarly. Radix Sort’s ability to handle these diverse input types uniformly is likely due to its non-comparative nature. Unlike comparison-based sorting algorithms, Radix Sort focuses on digit-by-digit processing, making it insensitive to whether the input is sorted, reverse-sorted, or randomly distributed. The performance is largely determined by the input size rather than the structure of the input data, as indicated by the close clustering of lines for different input types across the graphs. This could also imply that for large data sets, the inherent properties of the input have little impact on the overall runtime and communication cost, as Radix Sort’s time complexity is dependent on the length and width of the keys rather than their order.
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/7329d89f-c86e-4c35-936e-03ff4120a709">
 
@@ -373,7 +372,9 @@ blah
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/1cb9356a-02d9-49df-a6a0-edd673269b73">
 
-blah
+Main: In the strong scaling plot for main, we see that perturbed and random inputs show the highest times for large input sizes (e.g., 268435456), which is likely due to the nature of random data having more variance. Reverse and sorted inputs, on the other hand, perform more efficiently, especially at larger sizes, since these inputs are more predictable and easier to handle by the sorting algorithm.
+Comm: Communication times are significantly higher for random and perturbed inputs, especially as the array size grows. The sorted and reverse inputs handle communication much better, reflecting more efficient data distribution due to their orderly nature.
+Comp: Computational times follow a similar trend: random inputs require the most time to sort, followed by perturbed inputs, while reverse and sorted arrays take less time. This makes sense given that reverse and sorted arrays are easier to process, while random and perturbed require more computation for reordering.
 
 #### 4.1c
 
@@ -383,7 +384,9 @@ blah
 
 <img width="300" alt="image" src="image-5.png">
 
-blah
+These plots show the average, minimum, and maximum time per rank as the number of processors increases. The maximum time per rank spikes initially for smaller arrays, likely due to load imbalances, as some processors finish their tasks quicker than others.
+As the array size increases, the gap between minimum and maximum times narrows, indicating better load balancing for larger input sizes. This suggests that as the data grows, the workload becomes more evenly distributed among processors.
+However, the maximum time remains consistently higher, especially for larger processor counts, indicating that certain ranks are consistently taking longer to process data, likely due to communication or computation bottlenecks in specific processors.
 
 
 
