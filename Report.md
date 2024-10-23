@@ -349,7 +349,7 @@ These plot show the speedup x # of processors for main, comm, and comp_large. Fr
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/30f52c7f-25d7-4550-a61e-292242e4c047">
 
-In these graphs, we observe the performance of the merge sort algorithm for different input types: perturbed, random, reverse, and sorted. The first two graphs show that random input consistently results in the worst performance, with a sharp increase in time as the input size grows. Perturbed input behaves similarly but is slightly better than random. Sorted and reverse inputs, on the other hand, remain the most efficient, especially for larger input sizes, where their performance growth is more gradual. The third graph shows minimal variation between input types when handling smaller inputs, likely indicating that all types are processed quickly and similarly in smaller data sets. As the data size grows, random input clearly performs the worst likely due to the nature of the merge sort algorithm which would require merging and swapping elements for elements that are not sorted.
+In these graphs, we observe the performance of the merge sort algorithm for different input types: perturbed, random, reverse, and sorted. The first two graphs show that random input consistently results in the worst performance, with a sharp increase in time as the processor count grows. Perturbed input behaves similarly but is slightly better than random. Sorted and reverse inputs, on the other hand, remain the most efficient, where their performance growth is more gradual as the number of processors increase. The third graph shows minimal variation between input types when handling smaller inputs, likely indicating that all types are processed quickly and similarly across all variations made to processor count. As the processor count grows, random input clearly performs the worst likely due to the nature of the merge sort algorithm which would require merging and swapping elements for elements that are not sorted increasing its overhead by the most amongst all input types.
 
 #### 4.1c
 
@@ -371,17 +371,25 @@ The plots show the average, minimum, and maximum time per rank using a merge sor
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e43cd140-9397-4b76-99af-51436622ac41">
 
+Given above are plots that show speedup achieved as the number of processors increases for the main, communication (comm), and large computation (comp_large) tasks specifically for a bitonic sorting algorithm. The results indicate that smaller array sizes see the least benefit, showing smaller speedups overall. This is probably due to the fact that smaller array sizes are less parallelizable which translates to lesser speedup values. For the main task, speedup tends to decline as the processor count grows as highlighted in the comm plot. This lines up with our expectations as an increase in processor count would translate to an increase in communication overhead whcih would reduce speedup as the processor count increases. In contrast, the speedup for comp_large improves as more processors are introduced, since distributing the computational load reduces the work per processor. We can also observe that smaller arrays have the highest speedups which is most likely due to the fact that they are computationally less expensive than the larger ones.
+
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f882e03d-073a-4b6c-a722-0f7dfc79b1a9">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e0267fcb-2cab-4b96-a7ed-05386dc17f21">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/81696fbc-c3be-42c0-ad90-69caf47afb4e">
 
+The provided plots illustrate the performance of the bitonic sort algorithm for four types of input: sorted, random, reverse, and perturbed. The first two plots indicate that the average time increases as the number of processors grows. This can be attributed to the "main" task, where combining data from multiple processors results in increased processing time. Interestingly, for random input, the rate of increase is slightly steeper compared to the other input types. Similarly, in the "comm" plot, the time taken increases with the number of processors, likely due to greater communication overhead, which is represented by an upward slope. Once again, random input shows the highest average time values, while perturbed and reverse inputs perform slightly worse than sorted input. Lastly, the "comp_large" plot reveals that the average time levels off at 128 processors, with no significant improvement in performance beyond this point. This trend remains consistent across all input types.
+
+#### 4.1c
+
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f3a8688a-2987-43cd-9642-61ed071b787d">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d5f7b59b-ad8b-4e23-8a8a-7b94a865181e">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d9efc4ea-266d-411a-8b32-79cccf2acbf4">
+
+These plots show the average, minimum, and maximum time per rank when using the bitonic sort algorithm. For smaller arrays, the maximum time is much higher than both the average and minimum times, suggesting possible communication bottlenecks between ranks. As the array size increases, the delta between the minimum and maximum times decrease, indicating better distributed performance with larger inputs.
 
 ### 1. Sample Sort
 
