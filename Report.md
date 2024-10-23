@@ -250,22 +250,22 @@ We are using 2^16 or 65536 values that make up the total array length along with
 
 - Bitonic sort Calltree:
 ```
-2.137 main
+7.322 main
 ├─ 0.000 MPI_Init
-└─ 0.511 main
-   ├─ 0.009 data_init_runtime
-   ├─ 0.095 comm
-   │  ├─ 0.093 MPI_Barrier
-   │  ├─ 0.000 MPI_Scatter
-   │  └─ 0.002 comm_large
-   │     └─ 0.002 MPI_Gather
-   ├─ 0.012 comp
-   │  └─ 0.012 comp_large
+└─ 6.781 main
+   ├─ 6.518 MPI_Comm_dup
    ├─ 0.000 MPI_Finalize
-   ├─ 0.000 correctness_check
-   ├─ 0.000 MPI_Initialized
    ├─ 0.000 MPI_Finalized
-   └─ 0.404 MPI_Comm_dup
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.090 comm
+   │  ├─ 0.074 MPI_Barrier
+   │  ├─ 0.010 MPI_Scatter
+   │  └─ 0.005 comm_large
+   │     └─ 0.005 MPI_Gather
+   ├─ 0.172 comp
+   │  └─ 0.172 comp_large
+   ├─ 0.012 correctness_check
+   └─ 0.091 data_init_runtime
 ```
 - Radix sort Calltree:
 ```
