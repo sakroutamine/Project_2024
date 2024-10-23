@@ -10,6 +10,7 @@
 #include <limits>
 #include <cstdlib> // For rand(), srand()
 #include <ctime>   // For time(0)
+#include <cstdint>
 #include <utility> // For std::pair
 
 #include <caliper/cali.h>
@@ -72,6 +73,19 @@ vector<vector<int>> reshapeMatrix(const vector<int>& flatMatrix, int r, int s) {
     return reshaped;
 }
 
+vector<vector<int>> perfectShuffleReshape(const vector<int>& flatMatrix, int r_prime, int s_prime) {
+    vector<vector<int>> reshaped(r_prime, vector<int>(s_prime));
+    int N = flatMatrix.size();
+    for (int i = 0; i < N; ++i) {
+        int new_pos = (i * s_prime) % (N - 1); // Adjust the mapping as needed
+        if (new_pos >= N) new_pos = N - 1;
+        int row = new_pos / s_prime;
+        int col = new_pos % s_prime;
+        reshaped[row][col] = flatMatrix[i];
+    }
+    return reshaped;
+}
+
 // Function to flatten the matrix in column-major order
 vector<int> flattenMatrixColumnMajor(const vector<vector<int>>& matrix) {
     vector<int> columnMajor;
@@ -113,22 +127,83 @@ void reconstructMatrixFromColumnMajor(vector<vector<int>>& matrix, const vector<
     }
 }
 
-// Step 6: Add infinities
 void addInfinities(vector<vector<int>>& matrix, int r) {
-    int cols = matrix[0].size();
+    int s = matrix[0].size(); // Original number of columns
+    int halfR = r / 2;
+    int newCols = s + 1; // After shifting, we may need an extra column
+
+    const int PLACEHOLDER = INT32_MIN + 1; // Placeholder value for unfilled positions
+
+    // Initialize new matrix with placeholder
+    vector<vector<int>> newMatrix(r, vector<int>(newCols, PLACEHOLDER));
+
+    // Shift elements
+    for (int col = 0; col < s; ++col) {
+        for (int row = 0; row < r; ++row) {
+            int newRow = row + halfR;
+            int newCol = col;
+            if (newRow >= r) {
+                newRow -= r;
+                newCol += 1; // Move to the next column
+            }
+            if (newCol < newCols) {
+                newMatrix[newRow][newCol] = matrix[row][col];
+            }
+        }
+    }
+
+    // Fill vacated positions in the first column with -infinity
+    for (int row = 0; row < r; ++row) {
+        if (newMatrix[row][0] == PLACEHOLDER) {
+            newMatrix[row][0] = INT32_MIN;
+        }
+    }
+
+    // Fill empty positions in last column with +infinity
+    for (int row = 0; row < r; ++row) {
+        if (newMatrix[row][newCols - 1] == PLACEHOLDER) {
+            newMatrix[row][newCols - 1] = INT32_MAX;
+        }
+    }
+
+    // Replace the original matrix with the new one
+    matrix = newMatrix;
+}
+
+// Function to remove infinities and reverse the shift
+void removeInfinitiesAndReverseShift(vector<vector<int>>& matrix, int r) {
+    int newCols = matrix[0].size(); // Should be s + 1
+    int s = newCols - 1; // Original number of columns
     int halfR = r / 2;
 
-    for (int i = 0; i < halfR; i++) {
-        for (int col = 0; col < cols; col++) {
-            matrix[i].insert(matrix[i].begin(), numeric_limits<int>::min());
+    const int PLACEHOLDER = INT32_MIN + 1; // Same placeholder used before
+
+    vector<vector<int>> originalMatrix(r, vector<int>(s));
+
+    // Reverse the shift
+    for (int col = 0; col < newCols; ++col) {
+        for (int row = 0; row < r; ++row) {
+            int value = matrix[row][col];
+
+            // Skip infinities and placeholders
+            if (value == INT32_MIN || value == INT32_MAX || value == PLACEHOLDER) {
+                continue;
+            }
+
+            int origRow = row - halfR;
+            int origCol = col;
+            if (origRow < 0) {
+                origRow += r;
+                origCol -= 1;
+            }
+            if (origCol >= 0 && origCol < s) {
+                originalMatrix[origRow][origCol] = value;
+            }
         }
     }
 
-    for (int i = matrix.size() - halfR; i < matrix.size(); i++) {
-        for (int col = 0; col < cols; col++) {
-            matrix[i].push_back(numeric_limits<int>::max());
-        }
-    }
+    // Replace the original matrix with the reconstructed matrix
+    matrix = originalMatrix;
 }
 
 // Function to calculate valid dimensions (r, s) based on N
@@ -363,30 +438,29 @@ int main(int argc, char** argv) {
         CALI_MARK_BEGIN("comp");
         CALI_MARK_BEGIN("comp_large");
 
-        // Step 3: Reshape the transposed matrix
-        vector<int> flatTransposed = flattenMatrixRowMajor(matrix);
+        CALI_MARK_BEGIN("comp");
+CALI_MARK_BEGIN("comp_large");
 
-        // Calculate new dimensions for reshaping
-        int N_total = flatTransposed.size();
+// Step 3: Reshape the transposed matrix
+vector<int> flatTransposed = flattenMatrixRowMajor(matrix);
 
-        // Find new (r', s') dimensions for reshaping
-        pair<int, int> reshapeDims = calculateDimensions(N_total);
-        int r_prime = reshapeDims.first;
-        int s_prime = reshapeDims.second;
+int N_total = flatTransposed.size();
+int s_prime;
+if (s % 2 == 0) {
+    s_prime = (3 * s) / 2;
+} else {
+    s_prime = s; // Adjust as per the algorithm's requirements
+}
+int r_prime = N_total / s_prime;
 
-        if (r_prime == -1 || s_prime == -1) {
-            cerr << "No valid reshape dimensions found for N = " << N_total << endl;
-            MPI_Finalize();
-            return 1;
-        }
+// Reshape the matrix using the reshapeMatrix function
+matrix = reshapeMatrix(flatTransposed, r_prime, s_prime);
 
-        // Reshape the matrix
-        matrix = reshapeMatrix(flatTransposed, r_prime, s_prime);
-        cout << "Matrix after reshape:" << endl;
-        printMatrix(matrix);
+cout << "Matrix after reshape:" << endl;
+printMatrix(matrix);
 
-        CALI_MARK_END("comp_large");
-        CALI_MARK_END("comp");
+CALI_MARK_END("comp_large");
+CALI_MARK_END("comp");
 
         // Begin computation region for second column sort
         CALI_MARK_BEGIN("comp");
@@ -457,12 +531,7 @@ int main(int argc, char** argv) {
         // Begin correctness check region
         CALI_MARK_BEGIN("correctness_check");
 
-        // Final step: Remove infinities
-        for (auto& row : matrix) {
-            row.erase(remove_if(row.begin(), row.end(), [](int x) {
-                return x == numeric_limits<int>::min() || x == numeric_limits<int>::max();
-            }), row.end());
-        }
+        removeInfinitiesAndReverseShift(matrix, rows);
 
         cout << "Final sorted matrix:" << endl;
         printMatrix(matrix);
