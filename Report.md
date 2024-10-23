@@ -226,48 +226,48 @@ function parallelMerge(subArray, subArraySize, rank, size):
 
 We are using 2^16 or 65536 values that make up the total array length along with using 32 processors. 
 
-- Merge Sort Calltree (2^16 Random): 
+- Merge Sort Calltree: 
 ```
-1.801 main
-├─ 0.000 MPI_Init
-└─ 0.062 main
-   ├─ 0.002 data_init_runtime
-   ├─ 0.041 comm
-   │  ├─ 0.038 comm_small
-   │  │  └─ 0.038 MPI_Barrier
-   │  └─ 0.002 comm_large
-   │     ├─ 0.002 MPI_Scatter
-   │     └─ 0.000 MPI_Gather
-   ├─ 0.001 comp
-   │  ├─ 0.000 comp_small
-   │  └─ 0.001 comp_large
+└─ 9.446 main
+   ├─ 8.979 MPI_Comm_dup
    ├─ 0.000 MPI_Finalize
-   ├─ 0.000 correctness_check
-   ├─ 0.000 MPI_Initialized
    ├─ 0.000 MPI_Finalized
-   └─ 0.020 MPI_Comm_dup
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.390 comm
+   │  ├─ 0.164 comm_large
+   │  │  ├─ 0.023 MPI_Gather
+   │  │  └─ 0.140 MPI_Scatter
+   │  └─ 0.227 comm_small
+   │     └─ 0.226 MPI_Barrier
+   ├─ 0.021 comp
+   │  ├─ 0.021 comp_large
+   │  └─ 0.000 comp_small
+   ├─ 0.054 correctness_check
+   │  ├─ 0.047 MPI_Bcast
+   │  └─ 0.007 MPI_Gather
+   └─ 0.000 data_init_runtime
 ```
 
-- Bitonic sort Calltree (2^16 Random):
+- Bitonic sort Calltree:
 ```
-2.137 main
+7.322 main
 ├─ 0.000 MPI_Init
-└─ 0.511 main
-   ├─ 0.009 data_init_runtime
-   ├─ 0.095 comm
-   │  ├─ 0.093 MPI_Barrier
-   │  ├─ 0.000 MPI_Scatter
-   │  └─ 0.002 comm_large
-   │     └─ 0.002 MPI_Gather
-   ├─ 0.012 comp
-   │  └─ 0.012 comp_large
+└─ 6.781 main
+   ├─ 6.518 MPI_Comm_dup
    ├─ 0.000 MPI_Finalize
-   ├─ 0.000 correctness_check
-   ├─ 0.000 MPI_Initialized
    ├─ 0.000 MPI_Finalized
-   └─ 0.404 MPI_Comm_dup
+   ├─ 0.000 MPI_Initialized
+   ├─ 0.090 comm
+   │  ├─ 0.074 MPI_Barrier
+   │  ├─ 0.010 MPI_Scatter
+   │  └─ 0.005 comm_large
+   │     └─ 0.005 MPI_Gather
+   ├─ 0.172 comp
+   │  └─ 0.172 comp_large
+   ├─ 0.012 correctness_check
+   └─ 0.091 data_init_runtime
 ```
-- Radix sort Calltree (2^16 Random):
+- Radix sort Calltree:
 ```
 0.451 main
 ├─ 0.001 MPI_Barrier
@@ -303,7 +303,7 @@ We are using 2^16 or 65536 values that make up the total array length along with
 │  └─ 0.000 MPI_Gather
 └─ 0.000 data_init_runtime
 ```
-Sample Sort
+- Sample Sort:
 ```1.629 main
 ├─ 0.000 MPI_Init
 ├─ 0.000 data_init_X
@@ -323,106 +323,109 @@ Sample Sort
 ├─ 0.000 MPI_Finalized
 └─ 0.001 MPI_Comm_dup
 ```
-Please use the caliper build `/scratch/group/csce435-f24/Caliper/caliper/share/cmake/caliper`
-(same as lab2 build.sh) to collect caliper files for each experiment you run.
 
-Your Caliper annotations should result in the following calltree
-(use `Thicket.tree()` to see the calltree):
-
-```
-main
-|_ data_init_X      # X = runtime OR io
-|_ comm
-|    |_ comm_small
-|    |_ comm_large
-|_ comp
-|    |_ comp_small
-|    |_ comp_large
-|_ correctness_check
-```
-
-Required region annotations:
-
-- `main` - top-level main function.
-  - `data_init_X` - the function where input data is generated or read in from file. Use _data_init_runtime_ if you are generating the data during the program, and _data_init_io_ if you are reading the data from a file.
-  - `correctness_check` - function for checking the correctness of the algorithm output (e.g., checking if the resulting data is sorted).
-  - `comm` - All communication-related functions in your algorithm should be nested under the `comm` region.
-    - Inside the `comm` region, you should create regions to indicate how much data you are communicating (i.e., `comm_small` if you are sending or broadcasting a few values, `comm_large` if you are sending all of your local values).
-    - Notice that auxillary functions like MPI_init are not under here.
-  - `comp` - All computation functions within your algorithm should be nested under the `comp` region.
-    - Inside the `comp` region, you should create regions to indicate how much data you are computing on (i.e., `comp_small` if you are sorting a few values like the splitters, `comp_large` if you are sorting values in the array).
-    - Notice that auxillary functions like data_init are not under here.
-  - `MPI_X` - You will also see MPI regions in the calltree if using the appropriate MPI profiling configuration (see **Builds/**). Examples shown below.
-
-All functions will be called from `main` and most will be grouped under either `comm` or `comp` regions, representing communication and computation, respectively. You should be timing as many significant functions in your code as possible. **Do not** time print statements or other insignificant operations that may skew the performance measurements.
-
-### **Nesting Code Regions Example** - all computation code regions should be nested in the "comp" parent code region as following:
-
-```
-CALI_MARK_BEGIN("comp");
-CALI_MARK_BEGIN("comp_small");
-sort_pivots(pivot_arr);
-CALI_MARK_END("comp_small");
-CALI_MARK_END("comp");
-
-# Other non-computation code
-...
-
-CALI_MARK_BEGIN("comp");
-CALI_MARK_BEGIN("comp_large");
-sort_values(arr);
-CALI_MARK_END("comp_large");
-CALI_MARK_END("comp");
-```
-
-### **Calltree Example**:
-
-```
-# MPI Mergesort
-4.695 main
-├─ 0.001 MPI_Comm_dup
-├─ 0.000 MPI_Finalize
-├─ 0.000 MPI_Finalized
-├─ 0.000 MPI_Init
-├─ 0.000 MPI_Initialized
-├─ 2.599 comm
-│  ├─ 2.572 MPI_Barrier
-│  └─ 0.027 comm_large
-│     ├─ 0.011 MPI_Gather
-│     └─ 0.016 MPI_Scatter
-├─ 0.910 comp
-│  └─ 0.909 comp_large
-├─ 0.201 data_init_runtime
-└─ 0.440 correctness_check
-```
-
-### 3b. Collect Metadata
-
-Have the following code in your programs to collect metadata:
-
-```
-adiak::init(NULL);
-adiak::launchdate();    // launch date of the job
-adiak::libraries();     // Libraries used
-adiak::cmdline();       // Command line used to launch the job
-adiak::clustername();   // Name of the cluster
-adiak::value("algorithm", algorithm); // The name of the algorithm you are using (e.g., "merge", "bitonic")
-adiak::value("programming_model", programming_model); // e.g. "mpi"
-adiak::value("data_type", data_type); // The datatype of input elements (e.g., double, int, float)
-adiak::value("size_of_data_type", size_of_data_type); // sizeof(datatype) of input elements in bytes (e.g., 1, 2, 4)
-adiak::value("input_size", input_size); // The number of elements in input dataset (1000)
-adiak::value("input_type", input_type); // For sorting, this would be choices: ("Sorted", "ReverseSorted", "Random", "1_perc_perturbed")
-adiak::value("num_procs", num_procs); // The number of processors (MPI ranks)
-adiak::value("scalability", scalability); // The scalability of your algorithm. choices: ("strong", "weak")
-adiak::value("group_num", group_number); // The number of your group (integer, e.g., 1, 10)
-adiak::value("implementation_source", implementation_source); // Where you got the source code of your algorithm. choices: ("online", "ai", "handwritten").
-```
-
-They will show up in the `Thicket.metadata` if the caliper file is read into Thicket.
-
-### **See the `Builds/` directory to find the correct Caliper configurations to get the performance metrics.** They will show up in the `Thicket.dataframe` when the Caliper file is read into Thicket.
 
 ## 4. Performance evaluation
+
+### 1. Merge Sort:
+#### 4.1a
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/2c6d92a6-8928-456c-82d5-0f6fec4df471">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/27049478-1eac-4041-b7fd-154b59976f7a">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/22b86a94-a958-4d45-ae07-ff5517d6c49f">
+
+These plot show the speedup x # of processors for main, comm, and comp_large. From these plots we can see that the smaller array sizes benefit the least with smaller speedups. The speedups within main actually tend to decrease with more processors, this is due to the communication overhead as seen in the comm graph. The speedup for comm exponentially decreases with increased processors, plateauing with higher processors. This would make sense as more processors would be used hence more communication to allocate parts of the array would be required. For the comp_large the speedup increases with more processors, this makes sense as the computation load decreases per processors as its distributed among more processors. The smaller array actually benefits the most for comp_large with increased processors, this could be due to the fact that it requires less merging and swapping for a smaller array.
+
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7a892919-121a-4f04-b10a-c6daabbafb83">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/ce2aabdf-7ff7-4a05-835b-66b8fb415d85">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/30f52c7f-25d7-4550-a61e-292242e4c047">
+
+In these graphs, we observe the performance of the merge sort algorithm for different input types: perturbed, random, reverse, and sorted. The first two graphs show that random input consistently results in the worst performance, with a sharp increase in time as the input size grows. Perturbed input behaves similarly but is slightly better than random. Sorted and reverse inputs, on the other hand, remain the most efficient, especially for larger input sizes, where their performance growth is more gradual. The third graph shows minimal variation between input types when handling smaller inputs, likely indicating that all types are processed quickly and similarly in smaller data sets. As the data size grows, random input clearly performs the worst likely due to the nature of the merge sort algorithm which would require merging and swapping elements for elements that are not sorted.
+#### 4.1c
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/edd91c53-604f-4522-a705-c630290ae8e2">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c17860bd-39ee-412d-a1c9-df05c2b59c6d">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/32c14247-8bc0-4f03-936e-43acca71323a">
+
+The plots show the average, minimum, and maximum time per rank using a merge sort algorithm. The maximum time initially spikes higher than both the average and minimum times which could indicate a communication bottlenecks among ranks. As the array size increases, the gap between the minimum and maximum times narrows, suggesting improved load balancing with larger inputs. However, the maximum time remains consistently higher, which points to certain ranks taking longer most likely due to communication overhead.
+
+
+### 1. Bitonic Sort:
+### 4.1a
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/dc84c46b-465b-4050-9adc-f380e1f95be2">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1d98956d-75aa-4bbd-9583-a5db3bcd946f">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e43cd140-9397-4b76-99af-51436622ac41">
+
+
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f882e03d-073a-4b6c-a722-0f7dfc79b1a9">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e0267fcb-2cab-4b96-a7ed-05386dc17f21">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/81696fbc-c3be-42c0-ad90-69caf47afb4e">
+
+
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f3a8688a-2987-43cd-9642-61ed071b787d">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d5f7b59b-ad8b-4e23-8a8a-7b94a865181e">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d9efc4ea-266d-411a-8b32-79cccf2acbf4">
+
+
+
+
+
+
+
+
+
+
+
+### 1. Radix Sort:
+#### 4.1a
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/5b4e0c1b-5b80-4d2e-86fb-024b3eed877c">
+
+<img width="300" alt="image" src="image.png">
+
+<img width="300" alt="image" src="image-2.png">
+
+Main: The speedup plot for the main function shows a sharp rise as we increase the number of processors, but the growth plateaus quickly, especially for larger input sizes. The highest speedups are achieved for medium-sized inputs (65536 and 262144), while smaller arrays do not benefit as much. The larger array sizes (67108864 and beyond) show diminishing returns with a larger number of processors, likely due to communication overhead. 
+Comm: The communication plot reveals that communication time grows more significant as we increase the number of processors, especially for large arrays. This reflects the increased overhead of distributing and collecting data across processors. The performance plateaus as we add more processors, highlighting the growing cost of communication with higher processor counts.
+Comp: Computation speedup shows a linear increase for medium-sized arrays (65536–1048576) as the number of processors increases. Larger arrays take advantage of more processors effectively, with speedup continuing even at higher processor counts. However, the computation speedup for smaller inputs does not benefit as much from higher processor counts due to the lesser computation involved.
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7329d89f-c86e-4c35-936e-03ff4120a709">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c33a4aaa-50d9-4a0e-8d25-afc0816d9592">
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1cb9356a-02d9-49df-a6a0-edd673269b73">
+
+In contrast to what we might expect, the graphs for main, comm, and comp show little to no significant difference between the various input types (perturbed, random, reverse, sorted) as the array size increases. This minimal variance suggests that the Radix Sort algorithm is robust across input types, treating each input type similarly. Radix Sort’s ability to handle these diverse input types uniformly is likely due to its non-comparative nature. Unlike comparison-based sorting algorithms, Radix Sort focuses on digit-by-digit processing, making it insensitive to whether the input is sorted, reverse-sorted, or randomly distributed. The performance is largely determined by the input size rather than the structure of the input data, as indicated by the close clustering of lines for different input types across the graphs. This could also imply that for large data sets, the inherent properties of the input have little impact on the overall runtime and communication cost, as Radix Sort’s time complexity is dependent on the length and width of the keys rather than their order.
+
+#### 4.1c
+
+<img width="300" alt="image" src="image-3.png">
+
+<img width="300" alt="image" src="image-4.png">
+
+<img width="300" alt="image" src="image-5.png">
+
+These plots show the average, minimum, and maximum time per rank as the number of processors increases. The maximum time per rank spikes initially for smaller arrays, likely due to load imbalances, as some processors finish their tasks quicker than others.
+As the array size increases, the gap between minimum and maximum times narrows, indicating better load balancing for larger input sizes. This suggests that as the data grows, the workload becomes more evenly distributed among processors.
+However, the maximum time remains consistently higher, especially for larger processor counts, indicating that certain ranks are consistently taking longer to process data, likely due to communication or computation bottlenecks in specific processors.
+
+
+
 
 Include detailed analysis of computation performance, communication performance.
 Include figures and explanation of your analysis.
