@@ -356,13 +356,14 @@ In these graphs, we observe the performance of the merge sort algorithm for diff
 
 The plots show the average, minimum, and maximum time per rank using a merge sort algorithm. The maximum time initially spikes higher than both the average and minimum times which could indicate a communication bottlenecks among ranks. As the array size increases, the gap between the minimum and maximum times narrows, suggesting improved load balancing with larger inputs. However, the maximum time remains consistently higher, which points to certain ranks taking longer most likely due to communication overhead.
 
-1. Radix Sort:
-4.1a
+### 1. Radix Sort:
+#### 4.1a
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5b4e0c1b-5b80-4d2e-86fb-024b3eed877c">
 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/f3eddfc0-c06a-4dbf-af1c-bf95995376fb">
+<img width="300" alt="image" src="image.png">
 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/483a280a-0a02-4e57-890e-b94bdc239f6e">
+
+<img width="300" alt="image" src="image-2.png">
 
 blah
 
@@ -370,11 +371,11 @@ blah
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/c33a4aaa-50d9-4a0e-8d25-afc0816d9592">
 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/1cb9356a-02d9-49df-a6a0-edd673269b73>
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1cb9356a-02d9-49df-a6a0-edd673269b73">
 
 blah
 
-4.1c
+#### 4.1c
 
 blah
 
