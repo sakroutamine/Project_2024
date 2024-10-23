@@ -98,7 +98,6 @@ return global_sorted_data
 
 ```
 
-
 - Radix Sort-
 
 ```
@@ -224,9 +223,10 @@ function parallelMerge(subArray, subArraySize, rank, size):
 
 ### 3a. Caliper instrumentation
 
-We are using 2^16 or 65536 values that make up the total array length along with using 32 processors. 
+We are using 2^16 or 65536 values that make up the total array length along with using 32 processors.
 
-- Merge Sort Calltree: 
+- Merge Sort Calltree:
+
 ```
 └─ 9.446 main
    ├─ 8.979 MPI_Comm_dup
@@ -249,6 +249,7 @@ We are using 2^16 or 65536 values that make up the total array length along with
 ```
 
 - Bitonic sort Calltree:
+
 ```
 7.322 main
 ├─ 0.000 MPI_Init
@@ -267,7 +268,9 @@ We are using 2^16 or 65536 values that make up the total array length along with
    ├─ 0.012 correctness_check
    └─ 0.091 data_init_runtime
 ```
+
 - Radix sort Calltree:
+
 ```
 0.451 main
 ├─ 0.001 MPI_Barrier
@@ -303,7 +306,9 @@ We are using 2^16 or 65536 values that make up the total array length along with
 │  └─ 0.000 MPI_Gather
 └─ 0.000 data_init_runtime
 ```
+
 - Sample Sort:
+
 ```1.629 main
 ├─ 0.000 MPI_Init
 ├─ 0.000 data_init_X
@@ -324,10 +329,10 @@ We are using 2^16 or 65536 values that make up the total array length along with
 └─ 0.001 MPI_Comm_dup
 ```
 
-
 ## 4. Performance evaluation
 
 ### 1. Merge Sort:
+
 #### 4.1a
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/2c6d92a6-8928-456c-82d5-0f6fec4df471">
@@ -338,7 +343,6 @@ We are using 2^16 or 65536 values that make up the total array length along with
 
 These plot show the speedup x # of processors for main, comm, and comp_large. From these plots we can see that the smaller array sizes benefit the least with smaller speedups. The speedups within main actually tend to decrease with more processors, this is due to the communication overhead as seen in the comm graph. The speedup for comm exponentially decreases with increased processors, plateauing with higher processors. This would make sense as more processors would be used hence more communication to allocate parts of the array would be required. For the comp_large the speedup increases with more processors, this makes sense as the computation load decreases per processors as its distributed among more processors. The smaller array actually benefits the most for comp_large with increased processors, this could be due to the fact that it requires less merging and swapping for a smaller array.
 
-
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/7a892919-121a-4f04-b10a-c6daabbafb83">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/ce2aabdf-7ff7-4a05-835b-66b8fb415d85">
@@ -346,6 +350,7 @@ These plot show the speedup x # of processors for main, comm, and comp_large. Fr
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/30f52c7f-25d7-4550-a61e-292242e4c047">
 
 In these graphs, we observe the performance of the merge sort algorithm for different input types: perturbed, random, reverse, and sorted. The first two graphs show that random input consistently results in the worst performance, with a sharp increase in time as the input size grows. Perturbed input behaves similarly but is slightly better than random. Sorted and reverse inputs, on the other hand, remain the most efficient, especially for larger input sizes, where their performance growth is more gradual. The third graph shows minimal variation between input types when handling smaller inputs, likely indicating that all types are processed quickly and similarly in smaller data sets. As the data size grows, random input clearly performs the worst likely due to the nature of the merge sort algorithm which would require merging and swapping elements for elements that are not sorted.
+
 #### 4.1c
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/edd91c53-604f-4522-a705-c630290ae8e2">
@@ -356,8 +361,8 @@ In these graphs, we observe the performance of the merge sort algorithm for diff
 
 The plots show the average, minimum, and maximum time per rank using a merge sort algorithm. The maximum time initially spikes higher than both the average and minimum times which could indicate a communication bottlenecks among ranks. As the array size increases, the gap between the minimum and maximum times narrows, suggesting improved load balancing with larger inputs. However, the maximum time remains consistently higher, which points to certain ranks taking longer most likely due to communication overhead.
 
-
 ### 1. Bitonic Sort:
+
 ### 4.1a
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/dc84c46b-465b-4050-9adc-f380e1f95be2">
@@ -366,15 +371,11 @@ The plots show the average, minimum, and maximum time per rank using a merge sor
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e43cd140-9397-4b76-99af-51436622ac41">
 
-
-
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f882e03d-073a-4b6c-a722-0f7dfc79b1a9">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e0267fcb-2cab-4b96-a7ed-05386dc17f21">
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/81696fbc-c3be-42c0-ad90-69caf47afb4e">
-
-
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/f3a8688a-2987-43cd-9642-61ed071b787d">
 
@@ -382,25 +383,17 @@ The plots show the average, minimum, and maximum time per rank using a merge sor
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d9efc4ea-266d-411a-8b32-79cccf2acbf4">
 
-
-
-
-
-
-
-
-
-
-
 ### 1. Radix Sort:
+
 #### 4.1a
+
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5b4e0c1b-5b80-4d2e-86fb-024b3eed877c">
 
 <img width="300" alt="image" src="image.png">
 
 <img width="300" alt="image" src="image-2.png">
 
-Main: The speedup plot for the main function shows a sharp rise as we increase the number of processors, but the growth plateaus quickly, especially for larger input sizes. The highest speedups are achieved for medium-sized inputs (65536 and 262144), while smaller arrays do not benefit as much. The larger array sizes (67108864 and beyond) show diminishing returns with a larger number of processors, likely due to communication overhead. 
+Main: The speedup plot for the main function shows a sharp rise as we increase the number of processors, but the growth plateaus quickly, especially for larger input sizes. The highest speedups are achieved for medium-sized inputs (65536 and 262144), while smaller arrays do not benefit as much. The larger array sizes (67108864 and beyond) show diminishing returns with a larger number of processors, likely due to communication overhead.
 Comm: The communication plot reveals that communication time grows more significant as we increase the number of processors, especially for large arrays. This reflects the increased overhead of distributing and collecting data across processors. The performance plateaus as we add more processors, highlighting the growing cost of communication with higher processor counts.
 Comp: Computation speedup shows a linear increase for medium-sized arrays (65536–1048576) as the number of processors increases. Larger arrays take advantage of more processors effectively, with speedup continuing even at higher processor counts. However, the computation speedup for smaller inputs does not benefit as much from higher processor counts due to the lesser computation involved.
 
@@ -424,8 +417,11 @@ These plots show the average, minimum, and maximum time per rank as the number o
 As the array size increases, the gap between minimum and maximum times narrows, indicating better load balancing for larger input sizes. This suggests that as the data grows, the workload becomes more evenly distributed among processors.
 However, the maximum time remains consistently higher, especially for larger processor counts, indicating that certain ranks are consistently taking longer to process data, likely due to communication or computation bottlenecks in specific processors.
 
+Column Sort:
 
-
+There are currently issues with generating the caliper files for the column sort implementation. However, we noticed that as the input size for column sort increases, the time to get the output file also increases. For example, for input size 32, the time taken was 58s. For input size 64, the time taken increased to 5 minutes and 3 seconds. Interestingly when input size was increased to 128, the time taken went back to 58s. I believe this is because of the constraints around column sort. Column sort only works for inputs N numbers, which are treated as an r × s matrix, where N = rs, s is a divisor of r, and r ≥ 2(s − 1)^2. We generate our inputs automatically, which means that we have to generate a matrix that matches those constraints. For input size 64, we still have two columns with 32 numbers each which would take longer to sort than input size 32, we have 2 columns with 16 numbers. When the input size increased to 128, our input generated had 4 columns with 32 elements so it was faster for the column to be sorted.
+As the number of elements N increases, the processor has more elements to sort so the local sorting processes sortColumns takes longer because they operate on larger datasets. Also with more elements, the amount of data that needs to be communicated between processes increases.
+By increasing the processors, the amount of data to be divided among the processes decreases which reduces what each processor has to handle.
 
 Include detailed analysis of computation performance, communication performance.
 Include figures and explanation of your analysis.
