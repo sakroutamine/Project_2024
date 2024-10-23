@@ -377,6 +377,12 @@ blah
 
 #### 4.1c
 
+<img width="300" alt="image" src="image-3.png">
+
+<img width="300" alt="image" src="image-4.png">
+
+<img width="300" alt="image" src="image-5.png">
+
 blah
 
 
