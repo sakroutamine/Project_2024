@@ -583,6 +583,9 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/66a6bef5-25c3-4278-82f7-583e6622e4e2">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/6a21ce30-fe6b-41ba-8bbb-40938ae62e2e">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d1a03cc7-9787-4907-9153-76e825c91be8">
+
+
+
 Plots for the presentation should be as follows:
 
 - For each implementation:
