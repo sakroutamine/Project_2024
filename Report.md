@@ -616,6 +616,14 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/060ef127-4c9b-4b26-8944-23befdbb4339">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3d59aa08-ca92-404d-a15e-b4c35e81b9af">
 
+##### main
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/4b2dd275-9b15-4783-aaef-2b5b0afc3940">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/a82b1f75-b0d2-476e-9fa3-d273e7ab17eb">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/cdbe09bf-c233-42e2-ab5d-daa5c3764c17">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f7e96fe8-f494-4618-b2bd-e65bcc30e908">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/6fe9af55-f90d-4d71-8bed-c22d34747f40">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/965ddd11-d0c7-4560-bf21-220ed9c74d08">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/9f995275-4500-4a5d-ae6f-989cd3fbfe5b">
 
 Plots for the presentation should be as follows:
 
