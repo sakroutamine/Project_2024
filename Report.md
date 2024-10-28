@@ -644,8 +644,24 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/e6624e96-0b61-41d2-b8f6-cc317aaac15a">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/cca86888-e6f1-46de-87e7-770b40d05100">
 
+#### Weak Scaling Speedup Plots (input_type)
+##### comp_large
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0931b097-5c8d-4901-87ac-c716631500f5">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/78a3919e-9aed-4c96-88e5-8b8703924fb4">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/898051c8-f4d2-43da-b652-2519d4a4422c">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/2a4ba305-e4b5-494d-8898-dd2f63a96e74">
 
+##### comm
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1e80f3fd-ae36-4bdc-9d1f-e0159682fbbd">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/50e5e2e2-f817-4726-886f-db18b8f61a9f">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/2eddecc1-af69-4d84-8190-611e36cc62a0">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/113b7871-ec69-4824-bfa4-3983d178f3e8">
 
+##### main
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/a3fdfa0f-4ade-486e-88ae-582b85068fb0">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c3894884-d045-4640-abac-18245b66b857">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/214e40e0-c867-4177-9002-eedfe9660c7d">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/aeb60fa6-c9cd-421b-8ed9-1aa7cf8f4a77">
 
 Plots for the presentation should be as follows:
 
