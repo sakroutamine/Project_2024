@@ -594,7 +594,18 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/6a21ce30-fe6b-41ba-8bbb-40938ae62e2e">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/d1a03cc7-9787-4907-9153-76e825c91be8">
 
+### 2. Bitonic Sort:
 
+#### Strong Scaling Plots (input_size)
+##### comp_large
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/00ff828e-3803-4507-994a-e44eb843e8d0">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/8dae6f89-e5a1-4dfb-b540-ccc77ee34d90">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/445cb5d1-e081-4437-91d5-b898638728d8">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/72c4cafc-0479-4454-8504-7fcfbd06661e">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d9d000ff-60a1-4418-a9ae-793d9a2815f1">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d7de9dc8-8df3-41ee-89c7-fd8a36535560">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b1cbf501-cf8f-4147-9677-4fdfa53fd5dd">
 
 Plots for the presentation should be as follows:
 
