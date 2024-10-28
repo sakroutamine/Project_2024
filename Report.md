@@ -421,13 +421,23 @@ These plots show the average, minimum, and maximum time per rank when using the 
 
 ### 1. Sample Sort
 
-<img width="300" alt="image" src="image.png">
-<img width="300" alt="image" src="image2.png">
-<img width="300" alt="image" src="image3.png">
-<img width="300" alt="image" src="image4.png">
-<img width="300" alt="image" src="image5.png">
+<img width="300" alt="image" src="4.1a-1.png">
+<img width="300" alt="image" src="4.1a-2.png">
+<img width="300" alt="image" src="4.1a-3.png">
 
-The Sample Sort algorithm has been alternating between briefly working and crashing when run. As shown in the image above, it appears to be a memory issue in the code that hasn't been identified yet. Whenever these issues are not happening, the graphs produced by the cali file will work for main and display distorted data that somewhat show how increased sample size results in a slowdown as expected. This problem should be resolved by presentation time.
+As we can see in the above images there is a speedup that can be seen when increasing the number of processors depending on the size of the original input. From 2 to around 64 processors as the input size gets larger the sort gets magnitutdes slower but this slowdown greatly diminishes when we go above 200 processors as we parallelize more of the work and see a big speedup. We also see speedup in the comm chart as processor count grows since more processors will be increasing the communication overheard time and reducing overall communication speed. The comp_large shows the speedup hitting a plateu until we reach input size of 2^28 which strangely has a large jump up in speedup.
+
+<img width="300" alt="image" src="4.1a-4.png">
+<img width="300" alt="image" src="4.1a-5.png">
+<img width="300" alt="image" src="4.1a-6.png">
+
+The provided plots illustrate the performance of the sample sort algorithm for four types of input: sorted, random, reverse, and perturbed. The second  graph shows how average communication time increases as we add more processors, which can again be attributed to the increase in overhead required for the processors to communicate with each other. We do see comp large average time decreasing as we add processors, which could be a result of the extra processing power dedicated to the job.
+
+<img width="300" alt="image" src="4.1a-7.png">
+<img width="300" alt="image" src="4.1a-8.png">
+<img width="300" alt="image" src="4.1a-9.png">
+
+The provided plots show the average, minimum, and maximum time per rank when using sample sort. We can see the first 2 graphs have similar times but as the input size gets larger and larger there is more of a slowdown in the algorithm
 
 ### 1. Radix Sort:
 
