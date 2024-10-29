@@ -421,21 +421,21 @@ These plots show the average, minimum, and maximum time per rank when using the 
 
 ### 1. Sample Sort
 
-<img width="300" alt="image" src="4.1a-1.png">
-<img width="300" alt="image" src="4.1a-2.png">
-<img width="300" alt="image" src="4.1a-3.png">
+<img width="300" alt="image" src="pics/4.1a-1.png">
+<img width="300" alt="image" src="pics/4.1a-2.png">
+<img width="300" alt="image" src="pics/4.1a-3.png">
 
 As we can see in the above images there is a speedup that can be seen when increasing the number of processors depending on the size of the original input. From 2 to around 64 processors as the input size gets larger the sort gets magnitutdes slower but this slowdown greatly diminishes when we go above 200 processors as we parallelize more of the work and see a big speedup. We also see speedup in the comm chart as processor count grows since more processors will be increasing the communication overheard time and reducing overall communication speed. The comp_large shows the speedup hitting a plateu until we reach input size of 2^28 which strangely has a large jump up in speedup.
 
-<img width="300" alt="image" src="4.1a-4.png">
-<img width="300" alt="image" src="4.1a-5.png">
-<img width="300" alt="image" src="4.1a-6.png">
+<img width="300" alt="image" src="pics/4.1a-4.png">
+<img width="300" alt="image" src="pics/4.1a-5.png">
+<img width="300" alt="image" src="pics/4.1a-6.png">
 
 The provided plots illustrate the performance of the sample sort algorithm for four types of input: sorted, random, reverse, and perturbed. The second  graph shows how average communication time increases as we add more processors, which can again be attributed to the increase in overhead required for the processors to communicate with each other. We do see comp large average time decreasing as we add processors, which could be a result of the extra processing power dedicated to the job.
 
-<img width="300" alt="image" src="4.1a-7.png">
-<img width="300" alt="image" src="4.1a-8.png">
-<img width="300" alt="image" src="4.1a-9.png">
+<img width="300" alt="image" src="pics/4.1a-7.png">
+<img width="300" alt="image" src="pics/4.1a-8.png">
+<img width="300" alt="image" src="pics/4.1a-9.png">
 
 The provided plots show the average, minimum, and maximum time per rank when using sample sort. We can see the first 2 graphs have similar times but as the input size gets larger and larger there is more of a slowdown in the algorithm
 
@@ -736,6 +736,74 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/5bb9acdf-008c-4d13-bf4a-6e1a85cfdddc">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/cd892df7-c182-42b8-910e-1d93232f9739">
 
+### 2. Sample Sort:
+
+#### Strong Scaling Plots (input_size)
+##### comp_large
+
+<img width="300" alt="image" src="pics/521.png">
+<img width="300" alt="image" src="pics/522real.png">
+<img width="300" alt="image" src="pics/523.png">
+<img width="300" alt="image" src="pics/524.png">
+<img width="300" alt="image" src="pics/525.png">
+<img width="300" alt="image" src="pics/526.png">
+<img width="300" alt="image" src="pics/527.png">
+
+##### comm
+<img width="300" alt="image" src="pics/511.png">
+<img width="300" alt="image" src="pics/522.png">
+<img width="300" alt="image" src="pics/513.png">
+<img width="300" alt="image" src="pics/514.png">
+<img width="300" alt="image" src="pics/515.png">
+<img width="300" alt="image" src="pics/516.png">
+<img width="300" alt="image" src="pics/517.png">
+
+##### main
+<img width="300" alt="image" src="pics/51.png">
+<img width="300" alt="image" src="pics/52.png">
+<img width="300" alt="image" src="pics/53.png">
+<img width="300" alt="image" src="pics/54.png">
+<img width="300" alt="image" src="pics/55.png">
+<img width="300" alt="image" src="pics/56.png">
+<img width="300" alt="image" src="pics/57.png">
+
+#### Strong Scaling Speedup Plots (input_type)
+##### comp_large
+<img width="300" alt="image" src="pics/531.png">
+<img width="300" alt="image" src="pics/532.png">
+<img width="300" alt="image" src="pics/533.png">
+<img width="300" alt="image" src="pics/534.png">
+
+##### comm
+<img width="300" alt="image" src="pics/541.png">
+<img width="300" alt="image" src="pics/542.png">
+<img width="300" alt="image" src="pics/543.png">
+<img width="300" alt="image" src="pics/544.png">
+
+##### main
+<img width="300" alt="image" src="pics/551.png">
+<img width="300" alt="image" src="pics/552.png">
+<img width="300" alt="image" src="pics/553.png">
+<img width="300" alt="image" src="pics/554.png">
+
+#### Weak Scaling Speedup Plots (input_type)
+##### comp_large
+<img width="300" alt="image" src="pics/561.png">
+<img width="300" alt="image" src="pics/562.png">
+<img width="300" alt="image" src="pics/563.png">
+<img width="300" alt="image" src="pics/564.png">
+
+##### comm
+<img width="300" alt="image" src="pics/571.png">
+<img width="300" alt="image" src="pics/572.png">
+<img width="300" alt="image" src="pics/573.png">
+<img width="300" alt="image" src="pics/574.png">
+
+##### main
+<img width="300" alt="image" src="pics/581.png">
+<img width="300" alt="image" src="pics/582.png">
+<img width="300" alt="image" src="pics/583.png">
+<img width="300" alt="image" src="pics/583.png">
 
 Plots for the presentation should be as follows:
 
