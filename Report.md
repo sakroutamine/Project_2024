@@ -670,71 +670,71 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3f490ff6-d926-4309-a6de-f999fa062f04">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/dfdc00d7-abc1-4718-a924-578fe2415816">
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/451ca2df-88c3-4371-9f6c-81d258af1486">
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/640b943a-1910-45ca-9684-0eebe7795b7f">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/26918144-70cb-4fe2-96c0-cec9293eec4a">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e06d1888-a75d-4793-a4aa-c006bde9a9ef">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/bd60553b-05ac-4214-bff9-1eb0574203bd">
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/534ed7c2-0794-4b03-8d99-9ed830879cbf">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/90b860ce-d5e3-465c-a211-3b1813ec1f8a">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/907778c6-e941-43c2-9e01-0d449b2bf52a">
 
 
 ##### comm
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0bb3246c-b2c8-40ba-a68c-1619a4efe5fe">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b88731e8-b701-4736-a16b-55ba12737332">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e75c9bc2-2e64-478f-a861-57c29aeb1895">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/243bc772-b494-4a41-8fc4-d88fa0e0cb23">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/abf9221c-cd50-46de-96b5-2246db50ef38">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/beb36310-2072-401f-a053-6e479a332d0f">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/05f6e3ec-9c9f-4394-904b-53c052f3f385">
 
 ##### main
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b3e346d5-f827-4f1b-a843-420f19bdef9f">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/1151a432-18fd-4100-a233-fb19c917e4e7">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/bbd59457-3afe-4752-bd3c-552b68d6bc36">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f85d5c6a-02ff-4c0d-a96f-dbcb9f23608c">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/70b49b55-650c-4458-9de0-9f461328d807">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/154fa773-1c4c-4952-8e59-75ada7dc67c9">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/e8b165f2-309f-4d28-83a8-0d84d33be906">
 
 #### Strong Scaling Speedup Plots (input_type)
-##### comp_large
+##### comp
 
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/104757c9-814e-4147-a126-e44d101b2709">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/5fe4bb78-109f-4364-bb74-94ac39e872ac">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/3611f4b5-c0fe-448d-b0d7-109ea95f93d8">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/48572d6c-c9a5-46f6-8e3e-7ff6f445e1bd">
 
 ##### comm
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/8ad7d4a1-a1b5-46b1-b0ef-4c2263083ddf">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/c4d2f5e0-8418-47a5-9653-d6ab3d2bd7a1">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/45e862b2-982e-41ca-a2f1-d3f5d2daa0cc">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/de021451-1564-46f9-b18b-0a3512f9d532">
 
 ##### main
 
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/bf679d32-34a6-4f32-b563-09c78ba9d735">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/93d6a96f-e086-4b03-a319-04c2af3d0c08">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7863402b-58bf-437c-a152-87b4068e7fca">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/abde962e-4566-45d4-9068-9071ca789a81">
 
 #### Weak Scaling Speedup Plots (input_type)
 
 ##### comp
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d092ab37-7c6f-4db2-8576-be17e663c357">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/95f93aa8-91eb-4879-b7c3-d162028108ad">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/30c61d59-e149-410c-84fe-6705bc40d280">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/19ab9847-ec78-4f7e-a829-08fd5bebbd9f">
 
 ##### comm
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/a17454f9-c72d-456d-afe1-74790aab4d63">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/267d47f4-a8f8-4faf-a286-493ae47aa7bb">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/b0ee1be8-c9e6-42f5-87ee-cebbf325c8a0">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/9a0e08ee-5ccf-4330-98cb-df7fd6e70fc1">
 
 ##### main
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
-<img width="300" alt="image" src="">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/21e2e3e1-4b37-4354-9b6b-83f7c98cd0dd">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/211f821b-989a-436c-86ad-1a58ba247dcf">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/5bb9acdf-008c-4d13-bf4a-6e1a85cfdddc">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/cd892df7-c182-42b8-910e-1d93232f9739">
 
 
 Plots for the presentation should be as follows:
