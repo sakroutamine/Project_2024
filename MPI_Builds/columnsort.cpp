@@ -246,8 +246,17 @@ pair<int, int> findReshapeDimensions(int N) {
 }
 
 int main(int argc, char** argv) {
-    CALI_CXX_MARK_FUNCTION;
-    // Initialize Adiak
+
+    // Initialize MPI
+    MPI_Init(&argc, &argv);
+
+    int rank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    cali::ConfigManager mgr;
+    mgr.start();
+
     adiak::init(NULL);
 
     // Collect Adiak Metadata
@@ -259,7 +268,6 @@ int main(int argc, char** argv) {
     int scalability = 1; // 1 for strong scaling, 2 for weak scaling
     int group_number = 5;
     string implementation_source = "handwritten";
-
     adiak::launchdate();    // launch date of the job
     adiak::libraries();     // Libraries used
     adiak::cmdline();       // Command line used to launch the job
@@ -275,16 +283,6 @@ int main(int argc, char** argv) {
     adiak::value("group_num", group_number); // The number of your group
     adiak::value("implementation_source", implementation_source); // "online", "ai", "handwritten"
 
-    // Initialize MPI
-    MPI_Init(&argc, &argv);
-
-    int rank, size;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-
-    cali::ConfigManager mgr;
-    mgr.start();
-
     // Update Adiak metadata with the actual number of processes
     adiak::value("num_procs", size);
 
@@ -294,8 +292,10 @@ int main(int argc, char** argv) {
             cerr << "Usage: " << argv[0] << " N" << endl;
             cerr << "Please provide the input size N as a command-line argument." << endl;
         }
-        MPI_Finalize();
-        return 1;
+
+ 	int rc;
+        MPI_Abort(MPI_COMM_WORLD,rc);
+        exit(1);
     }
 
     int N = atoi(argv[1]); // Convert input string to integer
@@ -304,9 +304,16 @@ int main(int argc, char** argv) {
         if (rank == 0) {
             cerr << "N must be a positive integer." << endl;
         }
-        MPI_Finalize();
-        return 1;
+
+ 	int rc;
+        MPI_Abort(MPI_COMM_WORLD,rc);
+        exit(1);
     }
+
+
+    // Begin data initialization region
+    CALI_MARK_BEGIN("main");
+
 
     // Find valid (r, s) pairs
     pair<int, int> validPairs = calculateDimensions(N);
@@ -319,8 +326,10 @@ int main(int argc, char** argv) {
             cerr << "No valid (r, s) pairs found for N = " << N << endl;
             cerr << "Ensure that N can be expressed as r × s, where s >= 2, s divides r, and r >= 2*(s-1)^2." << endl;
         }
-        MPI_Finalize();
-        return 1;
+
+ 	int rc;
+        MPI_Abort(MPI_COMM_WORLD,rc);
+        exit(1);
     }
 
     if (rank == 0) {
@@ -352,8 +361,10 @@ int main(int argc, char** argv) {
             cerr << "Number of columns (" << cols << ") is not evenly divisible by the number of MPI processes (" << size << ")." << endl;
             cerr << "Please choose a number of MPI processes that evenly divides the number of columns." << endl;
         }
-        MPI_Finalize();
-        return 1;
+
+ 	int rc;
+        MPI_Abort(MPI_COMM_WORLD,rc);
+        exit(1);
     }
 
     int local_cols = cols / size; // Distribute columns evenly across processes
@@ -438,8 +449,6 @@ int main(int argc, char** argv) {
         CALI_MARK_BEGIN("comp");
         CALI_MARK_BEGIN("comp_large");
 
-        CALI_MARK_BEGIN("comp");
-CALI_MARK_BEGIN("comp_large");
 
 // Step 3: Reshape the transposed matrix
 vector<int> flatTransposed = flattenMatrixRowMajor(matrix);
@@ -538,6 +547,10 @@ CALI_MARK_END("comp");
 
         CALI_MARK_END("correctness_check");
     }
+
+    CALI_MARK_END("main");
+    MPI_Barrier(MPI_COMM_WORLD);
+    cout << rank << " of " << size << ": before finalize" << endl;
     mgr.stop();
     mgr.flush();
 
