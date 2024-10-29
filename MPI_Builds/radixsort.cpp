@@ -151,7 +151,6 @@ int main(int argc, char** argv) {
     CALI_MARK_END("comm");
 
     for (int exp = 1; global_max / exp > 0; exp *= BASE) {
-        CALI_CXX_MARK_LOOP_BEGIN(sort_loop, "Sorting loop");
 
         CALI_MARK_BEGIN("comp");
         counting_sort(subArray, N / size, exp);
@@ -204,7 +203,6 @@ int main(int argc, char** argv) {
         CALI_MARK_END("comm_large");
         CALI_MARK_END("comm");
 
-        CALI_CXX_MARK_LOOP_END(sort_loop);
     }
 
     CALI_MARK_BEGIN("comm");
