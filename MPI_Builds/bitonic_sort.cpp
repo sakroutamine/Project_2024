@@ -10,6 +10,7 @@
 
 #define MASTER 0
 
+// Data generation function
 void generate_data(double* data, int N, const std::string& input_type) {
     if (input_type == "random") {
         for (int i = 0; i < N; i++) {
@@ -36,6 +37,7 @@ void generate_data(double* data, int N, const std::string& input_type) {
     }
 }
 
+// Print array function
 void print_array(const double* arr, int N, const char* description, int limit = 10) {
     printf("%s: [", description);
     for (int i = 0; i < N && i < limit; i++) {
@@ -50,12 +52,14 @@ void print_array(const double* arr, int N, const char* description, int limit = 
     printf("]\n");
 }
 
+// Compare and swap function
 void compare_and_swap(double* arr, int i, int j, bool dir) {
     if (dir == (arr[i] > arr[j])) {
         std::swap(arr[i], arr[j]);
     }
 }
 
+// Bitonic merge function
 void bitonic_merge(double* arr, int low, int cnt, bool dir) {
     if (cnt > 1) {
         int k = cnt / 2;
@@ -67,6 +71,7 @@ void bitonic_merge(double* arr, int low, int cnt, bool dir) {
     }
 }
 
+// Bitonic sort function
 void bitonic_sort(double* arr, int low, int cnt, bool dir) {
     if (cnt > 1) {
         int k = cnt / 2;
@@ -77,6 +82,7 @@ void bitonic_sort(double* arr, int low, int cnt, bool dir) {
 }
 
 int main(int argc, char *argv[]) {
+    // Start Caliper function profiling
     CALI_CXX_MARK_FUNCTION;
 
     MPI_Init(&argc, &argv);
@@ -93,9 +99,11 @@ int main(int argc, char *argv[]) {
 
     numworkers = numtasks - 1;
 
+    // Initialize Caliper
     cali::ConfigManager mgr;
     mgr.start();
 
+    // Mark the start of the main computation
     CALI_MARK_BEGIN("main");
 
     int sizeOfArray;
@@ -110,10 +118,12 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
+    // Allocate memory for the arrays
     double *array = (double *)malloc(sizeOfArray * sizeof(double));
     double *subarray = (double *)malloc((sizeOfArray / numtasks) * sizeof(double));
 
     if (taskid == MASTER) {
+        // Data initialization (runtime)
         CALI_MARK_BEGIN("data_init_runtime");
         generate_data(array, sizeOfArray, input_type);
         printf("Data initialized on master with type: %s.\n", input_type.c_str());
@@ -121,13 +131,14 @@ int main(int argc, char *argv[]) {
         CALI_MARK_END("data_init_runtime");
     }
 
+    // Communication section
     CALI_MARK_BEGIN("comm");
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Scatter(array, sizeOfArray / numtasks, MPI_DOUBLE, subarray, sizeOfArray / numtasks, MPI_DOUBLE, MASTER, MPI_COMM_WORLD);
     printf("Task %d received data for sorting.\n", taskid);
     CALI_MARK_END("comm");
 
-    // Sort the local portion using bitonic sort
+    // Sorting the local portion using bitonic sort
     CALI_MARK_BEGIN("comp");
     CALI_MARK_BEGIN("comp_large");
     bitonic_sort(subarray, 0, sizeOfArray / numtasks, true);
@@ -135,7 +146,7 @@ int main(int argc, char *argv[]) {
     CALI_MARK_END("comp_large");
     CALI_MARK_END("comp");
 
-    // Gather the sorted subarrays back to the master
+    // Gathering the sorted subarrays back to the master
     CALI_MARK_BEGIN("comm");
     CALI_MARK_BEGIN("comm_large");
     MPI_Gather(subarray, sizeOfArray / numtasks, MPI_DOUBLE, array, sizeOfArray / numtasks, MPI_DOUBLE, MASTER, MPI_COMM_WORLD);
@@ -143,7 +154,7 @@ int main(int argc, char *argv[]) {
     CALI_MARK_END("comm");
 
     if (taskid == MASTER) {
-        // Perform final bitonic sort on the gathered data
+        // Perform the final bitonic sort on the gathered data
         CALI_MARK_BEGIN("comp");
         CALI_MARK_BEGIN("comp_large");
         bitonic_sort(array, 0, sizeOfArray, true);
@@ -152,6 +163,7 @@ int main(int argc, char *argv[]) {
         CALI_MARK_END("comp_large");
         CALI_MARK_END("comp");
 
+        // Correctness check section
         CALI_MARK_BEGIN("correctness_check");
         for (int i = 1; i < sizeOfArray; i++) {
             if (array[i - 1] > array[i]) {
@@ -163,16 +175,11 @@ int main(int argc, char *argv[]) {
         CALI_MARK_END("correctness_check");
     }
 
+    // Free allocated memory
     free(array);
     free(subarray);
 
-    mgr.stop();
-    mgr.flush();
-
-    MPI_Finalize();
-
-    CALI_MARK_END("main");
-
+    // Adiak metadata collection before stopping Caliper
     adiak::init(NULL);
     adiak::launchdate();
     adiak::libraries();
@@ -188,6 +195,16 @@ int main(int argc, char *argv[]) {
     adiak::value("scalability", "strong");
     adiak::value("group_num", 1);
     adiak::value("implementation_source", "handwritten");
+
+    // Flush and stop Caliper after Adiak metadata is collected
+    mgr.flush();
+    mgr.stop();
+
+    // Finalize MPI
+    MPI_Finalize();
+
+    // Mark the end of the main section
+    CALI_MARK_END("main");
 
     if (taskid == MASTER) {
         printf("Metadata collected:\n");
