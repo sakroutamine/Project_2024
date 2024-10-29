@@ -663,6 +663,80 @@ perform runs that invoke algorithm2 for Sorted, ReverseSorted, and Random data).
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/214e40e0-c867-4177-9002-eedfe9660c7d">
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/aeb60fa6-c9cd-421b-8ed9-1aa7cf8f4a77">
 
+### 1. Radix Sort:
+
+#### Strong Scaling Plots (input_size)
+##### comp
+
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/3f490ff6-d926-4309-a6de-f999fa062f04">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/dfdc00d7-abc1-4718-a924-578fe2415816">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/451ca2df-88c3-4371-9f6c-81d258af1486">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/640b943a-1910-45ca-9684-0eebe7795b7f">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/bd60553b-05ac-4214-bff9-1eb0574203bd">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/534ed7c2-0794-4b03-8d99-9ed830879cbf">
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/907778c6-e941-43c2-9e01-0d449b2bf52a">
+
+
+##### comm
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+##### main
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+#### Strong Scaling Speedup Plots (input_type)
+##### comp_large
+
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+##### comm
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+##### main
+
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+#### Weak Scaling Speedup Plots (input_type)
+
+##### comp
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+##### comm
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+##### main
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+<img width="300" alt="image" src="">
+
+
 Plots for the presentation should be as follows:
 
 - For each implementation:
